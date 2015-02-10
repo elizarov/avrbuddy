@@ -90,31 +90,36 @@ namespace FixNumUtil {
   }
 
   // ----------- Change decimal precision -----------
+
+  template<typename T> T scaleUp(T x, prec_t prec1, prec_t prec2) {
+    for (prec_t i = prec1; i < prec2; i++) {
+      if (x > Limits<T>::maxValue / 10)
+        return Limits<T>::maxValue;
+      if (x < Limits<T>::minValue / 10)
+        return Limits<T>::minValue;
+      x *= 10; 
+    }
+    return x;
+  }
+
+  template<typename T> T scaleDown(T x, prec_t prec1, prec_t prec2) {
+    for (prec_t i = prec2; i < prec1; i++) {
+      T mod = x % 10;
+      x = x / 10;
+      if (mod >= 5)
+        x++;
+      else if (mod <= -5)
+        x--;  
+    }
+    return x;  
+  }
   
-  template<typename T> T scale(T x, prec_t prec1, prec_t prec2) {
-    if (prec2 >= prec1) {
-      for (prec_t i = prec1; i < prec2; i++) {
-        if (x > Limits<T>::maxValue / 10)
-          return Limits<T>::maxValue;
-        if (x < Limits<T>::minValue / 10)
-          return Limits<T>::minValue;
-        x *= 10; 
-      }
-      return x;
-    } else {
-      if (x >= Limits<T>::maxValue || x <= Limits<T>::minValue)
-        return x;
-      // prec2 < prec1
-      for (prec_t i = prec2; i < prec1; i++) {
-        T mod = x % 10;
-        x = x / 10;
-        if (mod >= 5)
-          x++;
-        else if (mod <= -5)
-          x--;  
-      }
-      return x;  
-    }  
+  template<typename T> inline T scale(T x, prec_t prec1, prec_t prec2) {
+    if (prec2 > prec1) 
+      return scaleUp(x, prec1, prec2);
+    if (prec2 < prec1)
+      return scaleDown(x, prec1, prec2);
+    return x;
   }
 
   // ----------- Change decimal precision and type -----------

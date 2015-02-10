@@ -50,7 +50,9 @@ public:
 
   // formatting
   uint8_t format(char* pos, uint8_t size, fmt_t fmt = (fmt_t)prec);   
-  Buf format(uint8_t size = FixNumUtil::Limits<T>::bufSize - 1, fmt_t fmt = (fmt_t)prec); // formats to temporary buffer, with Ardino you can use Serial.println(num.format());
+
+  // formats to temporary buffer, with Ardino you can use Serial.println(num.format());
+  Buf format(uint8_t size = FixNumUtil::Limits<T>::bufSize - 1, fmt_t fmt = (fmt_t)prec); 
 
   // casts between various fixnum types
   template<typename T2, prec_t prec2> operator FixNum<T2, prec2>();
