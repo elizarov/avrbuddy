@@ -1,10 +1,15 @@
 
-CPPSRC = io/TWIMaster.cpp 
+CPPSRC = \
+      	io/TWIMaster.cpp    \
+	test/TestPorts.cpp  \
+	test/TestFixNum.cpp
+
 MCU    = atmega328p
 F_CPU  = 16000000
 OBJDIR = build
 
 # Same basic parameters that Arduino 1.6.0 uses
+CPPFLAGS += -std=c++11 # will have to be added to Arduino
 CPPFLAGS += -DF_CPU=$(F_CPU)UL
 CPPFLAGS += -Os
 CPPFLAGS += -g
@@ -20,7 +25,6 @@ CPPFLAGS += -Wa,-adhlns=$(<:%.cpp=$(OBJDIR)/%.lst)
 #---------------- Linker Options ----------------
 #  -Wl,...:     tell GCC to pass this to linker.
 LDFLAGS += -Wl,--relax
-#LDFLAGS += -Wl,--gc-sections
 
 #============================================================================
 
@@ -36,7 +40,7 @@ GENDEPFLAGS = -MMD -MP -MF .dep/$(@F).d
 ALL_CPPFLAGS = -mmcu=$(MCU) -I. -x c++ $(CPPFLAGS) $(GENDEPFLAGS)
 
 # Default target.
-all: init elf lss
+all: mkdirs elf lss
 
 elf: $(CPPSRC:%.cpp=$(OBJDIR)/%.elf)
 lss: $(CPPSRC:%.cpp=$(OBJDIR)/%.lss)
@@ -54,10 +58,9 @@ $(OBJDIR)/%.o: %.cpp
 	$(CC) -c $(ALL_CPPFLAGS) $< -o $@ 
 
 # Create object files directories
-init:
-	$(shell mkdir $(OBJDIR)    2>/dev/null)
-	$(shell mkdir $(OBJDIR)/io 2>/dev/null)
-	$(shell mkdir .dep         2>/dev/null)
+mkdirs:
+	$(shell mkdir $(OBJDIR)/io      2>/dev/null)
+	$(shell mkdir $(OBJDIR)/test    2>/dev/null)
 
 # Remove stuff
 clean:
@@ -66,3 +69,6 @@ clean:
 
 # Listing of phony targets.
 .PHONY: all els lss clean
+
+# Include the dependency files.
+-include $(shell mkdir .dep 2>/dev/null) $(wildcard .dep/*)
