@@ -1,9 +1,12 @@
-#ifndef TWI_MASTER_H_
-#define TWI_MASTER_H_
+#ifndef AVRBUDDY_IO_TWI_MASTER_H_
+#define AVRBUDDY_IO_TWI_MASTER_H_
 
-#include <stdint.h>
-#include <avr/io.h>
-#include <util/twi.h>
+/*
+   TWI Master implementation that is not based on interruptes, supporits different speeds,
+   and restores TWI hardware to the previous state it was initially encountered in.
+*/
+
+#include "IOBits.h"
 
 typedef uint16_t twi_speed_t;
 
