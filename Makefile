@@ -1,8 +1,5 @@
 
-CPPSRC = \
-      	io/TWIMaster.cpp    \
-	test/TestPorts.cpp  \
-	test/TestFixNum.cpp
+CPPSRC = test/TestPorts.cpp
 
 MCU    = atmega328p
 F_CPU  = 16000000
@@ -59,6 +56,7 @@ $(OBJDIR)/%.o: %.cpp
 
 # Create object files directories
 mkdirs:
+	$(shell mkdir $(OBJDIR)         2>/dev/null)
 	$(shell mkdir $(OBJDIR)/io      2>/dev/null)
 	$(shell mkdir $(OBJDIR)/test    2>/dev/null)
 

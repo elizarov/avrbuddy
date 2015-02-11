@@ -1,5 +1,5 @@
-#ifndef AVRBUDDY_IO_PORTS_H_
-#define AVRBUDDY_IO_PORTS_H_
+#ifndef PORTS_H_
+#define PORTS_H_
 
 /*
   Utilitity header file for type-safe maniputation of data ports on 8-bit AVR MCUs (ATTiny and ATMega series)
@@ -32,7 +32,19 @@
   Ports A to D are currently supported. Easily extended to more if needed.
 */
 
-#include "IOBits.h"
+#include <stdint.h>
+#include <avr/io.h>
+
+// ----------------------------------------------------------------------------------
+// Utility methods for direct bit manipulation
+
+inline void sbi(volatile uint8_t& port, uint8_t pin) {
+  port |= _BV(pin);
+}
+
+inline void cbi(volatile uint8_t& port, uint8_t pin) {
+  port &= ~_BV(pin);
+}
 
 // ----------------------------------------------------------------------------------
 // Utility marcos that are used to define Ports and PortX struts
@@ -223,5 +235,46 @@ PORT_STRUCT(C)
 #ifdef PORTD
 PORT_STRUCT(D)
 #endif
+
+// ----------------------------------------------------------------------------------
+// Undef all temp macros
+
+
+#undef PORTS_SET
+#undef PORTS_CLEAR
+#undef PORTS_ASSIGN
+#undef PORTS_QUERY
+
+#undef PORTS_COUNT_A    
+#undef PORTS_INDEX_A
+#undef PORTS_SET_A
+#undef PORTS_CLEAR_A
+#undef PORTS_ASSIGN_A
+#undef PORTS_QUERY_A
+
+#undef PORTS_COUNT_B    
+#undef PORTS_INDEX_B
+#undef PORTS_SET_B
+#undef PORTS_CLEAR_B
+#undef PORTS_ASSIGN_B
+#undef PORTS_QUERY_B
+
+#undef PORTS_COUNT_C    
+#undef PORTS_INDEX_C
+#undef PORTS_SET_C
+#undef PORTS_CLEAR_C
+#undef PORTS_ASSIGN_C
+#undef PORTS_QUERY_C
+
+#undef PORTS_COUNT_D    
+#undef PORTS_INDEX_D
+#undef PORTS_SET_D
+#undef PORTS_CLEAR_D
+#undef PORTS_ASSIGN_D
+#undef PORTS_QUERY_D
+
+#undef PORTS_COUNT
+
+#undef PORT_STRUCT
 
 #endif
